@@ -1,0 +1,14 @@
+Usar Django REST framework.
+La aplicación desarrollada debe poder ejecutarse dockerizada.
+Repositorio privado de Github (Agregar como colaborador al usuario m4lt4).
+Dockerfile/s para ejecutar la aplicación de manera local.
+README explicando la manera de ejecutar la aplicación.
+Documentación sobre la aplicación y su funcionamiento.
+
+Puntos extra (opcionales)
+• Testing.
+• Autenticación y autorización de la API.
+• Implementación de métodos adicionales en la API.
+• Diagrama de la solución utilizando servicios del Cloud (AWS, GCP o Azure).
+• Logs/Auditoría de uso de la API.
+• Solución deployada en cloud.

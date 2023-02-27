@@ -1,0 +1,19 @@
+version: '3.7'
+
+services:
+    api:
+        build:
+            context: ./Backend
+            dockerfile: Dockerfile
+        command: python .\manage.py runserver
+        ports:
+            - "8000:8000"
+
+        volumes:
+            - appdata:/var/www/
+
+
+
+volumes:
+    appdata:
+        driver: local
