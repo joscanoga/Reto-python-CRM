@@ -1,15 +1,14 @@
 # Project: Reto python crm
     
 
-Api rest desarollada en django framework, utilisando una base de datos sqlite 3, se desarollo con la finalidad de llevar un control de las vulnerabilidades obtenidas en la api(https://services.nvd.nist.gov/rest/json/cves/2.0) 
-con el fin de saber cuales vulnerabilidades han sido corregidas en nuestro sistema y caules no.
+Api rest desarollada en django framework, utilisando una base de datos sqlite 3, se desarollo con la finalidad de llevar un control de las vulnerabilidades obtenidas en la [api]https://services.nvd.nist.gov/rest/json/cves/2 con el fin de saber caules vulnerabilidades han sido corregidas en nuestro sistema y caules no.
 
 
 ## REQUISITOS
 
-
-1.   docker 
-2.   Docker compose
+1.  python 3
+2.  docker 
+3.  Docker compose
 
 ## INSTALACIÓN 
 En la carpeta raiz del projecto(Reto-python-CRM) ejecutar por terminal el siguiente comando
@@ -18,7 +17,18 @@ En la carpeta raiz del projecto(Reto-python-CRM) ejecutar por terminal el siguie
 ```
 Docker compose up -d --build
 ```
-
+## End-point: Autentificacion
+Devuelve un token que servira como autentificacion para usar las otras funciones de la api, este debe adjuntarse a headers con la clave "Token"
+### Method: GET
+>```
+>http://127.0.0.1:8000/
+>```
+### Response: 200
+```json
+{
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnQiOiI0NyIsImV4cCI6MTY3Nzc3NDc5N30.ChM-cmlaKWRC4A4jT7gLCcXE-QmiQqA-cEeraDDXUnU"
+}
+```
 
 ## End-point: obtener vulnerabilidades
 Endpoint GET que devuelve el listado total de las vulnerabilidades.  
@@ -52,6 +62,13 @@ en cao de no encontar ninguna vulnerabilidad que se adecue a los parametros devo
 >```
 >http://127.0.0.1:8000/api?cve_por_pagina=10
 >```
+### Headers
+
+|Content-Type|Value|
+|---|---|
+|token|eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnQiOiI4NCIsImV4cCI6MTY3Nzc3Mzg5OH0.KqJUOeHJymI7zIFf6g7uj__xZc7Kv00oK-4z0p7Bink|
+
+
 ### Query Params
 
 |Param|value|
@@ -166,6 +183,13 @@ en cao de no encontar ninguna vulnerabilidad que se adecue a los parametros devo
 >```
 >http://127.0.0.1:8000/api?cve_por_pagina=10&indice_inicial=10
 >```
+
+### Headers
+
+|Content-Type|Value|
+|---|---|
+|token|eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnQiOiI4NCIsImV4cCI6MTY3Nzc3Mzg5OH0.KqJUOeHJymI7zIFf6g7uj__xZc7Kv00oK-4z0p7Bink|
+
 ### Query Params
 
 |Param|value|
@@ -282,6 +306,12 @@ en cao de no encontar ninguna vulnerabilidad que se adecue a los parametros devo
 >```
 >http://127.0.0.1:8000/api?cve_por_pagina=10&solucionadas=1
 >```
+### Headers
+
+|Content-Type|Value|
+|---|---|
+|token|eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnQiOiI4NCIsImV4cCI6MTY3Nzc3Mzg5OH0.KqJUOeHJymI7zIFf6g7uj__xZc7Kv00oK-4z0p7Bink|
+
 ### Query Params
 
 |Param|value|
@@ -355,6 +385,12 @@ recibe en el body un objeto tipo json, con la clave ids y como valor la lista de
 >```
 >http://127.0.0.1:8000/api
 >```
+### Headers
+
+|Content-Type|Value|
+|---|---|
+|token|eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnQiOiI4NCIsImV4cCI6MTY3Nzc3Mzg5OH0.KqJUOeHJymI7zIFf6g7uj__xZc7Kv00oK-4z0p7Bink|
+
 ### Response: 200
 ```json
 {
@@ -368,5 +404,91 @@ recibe en el body un objeto tipo json, con la clave ids y como valor la lista de
 
 
 ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃
+## End-point: vulnerabilidades sumarizadas
+### Method: GET
+>```
+>http://127.0.0.1:8000/api/sumarizada
+>```
+### Headers
+
+|Content-Type|Value|
+|---|---|
+|Token|eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnQiOiI0NyIsImV4cCI6MTY3Nzc3NDc5N30.ChM-cmlaKWRC4A4jT7gLCcXE-QmiQqA-cEeraDDXUnU|
+
+
+### Response: 200
+```json
+{
+    "datos": {
+        "HIGH": {
+            "solucionado": {
+                "count": 56867,
+                "unique": 2,
+                "top": false,
+                "freq": 56864
+            },
+            "estado": {
+                "count": 56867,
+                "unique": 5,
+                "top": "Analyzed",
+                "freq": 28564
+            }
+        },
+        "MEDIUM": {
+            "solucionado": {
+                "count": 104564,
+                "unique": 1,
+                "top": false,
+                "freq": 104564
+            },
+            "estado": {
+                "count": 104564,
+                "unique": 5,
+                "top": "Analyzed",
+                "freq": 67224
+            }
+        },
+        "LOW": {
+            "solucionado": {
+                "count": 19133,
+                "unique": 1,
+                "top": false,
+                "freq": 19133
+            },
+            "estado": {
+                "count": 19133,
+                "unique": 4,
+                "top": "Analyzed",
+                "freq": 13484
+            }
+        },
+        "None": {
+            "solucionado": {
+                "count": 28113,
+                "unique": 1,
+                "top": false,
+                "freq": 28113
+            },
+            "estado": {
+                "count": 28113,
+                "unique": 7,
+                "top": "Analyzed",
+                "freq": 14729
+            }
+        }
+    }
+}
+```
+
+
+⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃
+
+## scripts
+### cliente.py
+Este script es el encargado de llenar la base de datos con las vulnerabilidades en la [api], en el caso de haber borrado el archivo de la base de datos ejecutar los siguientes comandos en la raiz del projecto:
+```
+cd backend
+python cliente.py
+```
 _________________________________________________
-Powered By: [postman-to-markdown](https://github.com/bautistaj/postman-to-markdown/)
+
