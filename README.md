@@ -1,7 +1,8 @@
 # Project: Reto python crm
     
 
-Api rest desarollada en django framework, utilisando una base de datos sqlite 3, se desarollo con la finalidad de llevar un control de las vulnerabilidades obtenidas en la api(https://services.nvd.nist.gov/rest/json/cves/2.0) con el fin de saber cuales vulnerabilidades han sido corregidas en nuestro sistema y caules no.
+Api rest desarollada en django framework, utilisando una base de datos sqlite 3, se desarollo con la finalidad de llevar un control de las vulnerabilidades obtenidas en la api(https://services.nvd.nist.gov/rest/json/cves/2.0) 
+con el fin de saber cuales vulnerabilidades han sido corregidas en nuestro sistema y caules no.
 
 
 ## REQUISITOS
