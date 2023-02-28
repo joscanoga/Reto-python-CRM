@@ -1,4 +1,3 @@
-# Create our image based on Python 3.10
 FROM python:3.10
 
 # Expose ports
@@ -14,11 +13,6 @@ ENV PYTHONUNBUFFERED 1
 ADD requirements.txt .
 RUN python -m pip install -r requirements.txt
 
-
-
-# Set working directory and addour django API files
+# Set working directory and addour Flask API files
 WORKDIR /app
-ADD . .
-RUN python manage.py migrate
-RUN python  cliente.py
-CMD python manage.py runserver
+ADD . /app  
