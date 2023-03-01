@@ -71,7 +71,7 @@ class VistaCVE(View):
 
     def post(self, request):
         """Funcion para responder las solicitudes post"""
-        #logging.info("solicitud post vistaCVE token:", self.token)
+        logging.info("solicitud post vistaCVE token:", self.token)
         datos = json.loads(request.body)["ids"]
         resultados = {}
         for id in datos:
@@ -125,6 +125,6 @@ class auth(View):
             return now + timedelta(days=days)
 
         token = encode(payload={ "exp": expire_date(2)}, key="secret", algorithm="HS256")
-        logging.info("solicitud de token:", self.token)
+        logging.info("solicitud de token:", token)
 
         return JsonResponse({"datos": str(token)})
