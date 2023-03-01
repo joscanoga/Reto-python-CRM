@@ -1,3 +1,5 @@
+from datetime import datetime, timedelta
+
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.utils.decorators import method_decorator
@@ -6,19 +8,30 @@ from django.views.decorators.csrf import csrf_exempt
 import pandas as pd
 from api.models import CVE
 import json
+import logging
+logging.basicConfig(filename='logs.log', encoding='utf-8', level=logging.DEBUG)
+from jwt import encode, decode, exceptions
 
 
 # Create your views here.
 
 class VistaCVE(View):
+    """Vista para responder a las solicitudes get y post de la ruta /api/"""
     # skip CSRF
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
+        try:
+            #print(json.loads(str(request.headers).replace("'", '"')))
+            self.token = decode(json.loads(str(request.headers).replace("'", '"'))["Token"], key="secret",algorithms="HS256")
+
+        except Exception as e:
+            return JsonResponse({"msg": str(e)})
         return super().dispatch(request, *args, **kwargs)
 
     def get(self, request):
+        """Funcion para responder las solicitudes get"""
         #en caso de que algun parametro reciba un valor no adecuado tomara el valor por defecto
-
+        logging.info("solicitud get vistaCVE token:",self.token)
         # parametro que define el numero de CVEs enviados en la peticion por defecto tiene el valor de 10 mil
         CVEPorPagina = request.GET.get("cve_por_pagina")
         CVEPorPagina = 10000 if CVEPorPagina is None or not (CVEPorPagina.isnumeric()) else int(CVEPorPagina)
@@ -57,6 +70,8 @@ class VistaCVE(View):
         return JsonResponse(datos)
 
     def post(self, request):
+        """Funcion para responder las solicitudes post"""
+        #logging.info("solicitud post vistaCVE token:", self.token)
         datos = json.loads(request.body)["ids"]
         resultados = {}
         for id in datos:
@@ -73,8 +88,20 @@ class VistaCVE(View):
         return JsonResponse({"datos": resultados})
 
 class Vistasumarizada(View):
+    """Vista para responder a las solicitudes get y post de la ruta /api/sumarizada/"""
+
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        try:
+            self.token = decode(json.loads(str(request.headers).replace("'", '"'))["Token"], key="secret",algorithms="HS256")
+
+        except Exception as e:
+            return JsonResponse({"msg": str(e)})
+        return super().dispatch(request, *args, **kwargs)
 
     def get(self,request):
+
+        logging.info("solicitud get Vistasumarizada token:", self.token)
         cve = list(CVE.objects.values())
         df=pd.DataFrame(cve)
         df.drop(['id',"descripcion"], axis=1,inplace=True)
@@ -87,3 +114,17 @@ class Vistasumarizada(View):
         #low=json.loads(df.describe().to_json(orient = 'columns'))
 
         return JsonResponse({"datos": datos})
+
+class auth(View):
+    """clase vista para generacion de tokens """
+
+
+    def get(self,response):
+        def expire_date(days: int):
+            now = datetime.now()
+            return now + timedelta(days=days)
+
+        token = encode(payload={ "exp": expire_date(2)}, key="secret", algorithm="HS256")
+        logging.info("solicitud de token:", self.token)
+
+        return JsonResponse({"datos": str(token)})

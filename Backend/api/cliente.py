@@ -5,18 +5,21 @@ from datetime import datetime
 
 #clase desde la cual se haran consultas a la api desde donde se traeran la vulnerabilidades
 class Cliente:
-
+    """cliente desde donde salen las peticiones a la api"""
     def __init__(self,url="https://services.nvd.nist.gov/rest/json/cves/2.0/"):
+        """constructor del cliente api"""
         self.con=sqlite3.connect("../db.sqlite3")
         self.cursor=cur = self.con.cursor()
         self.base = url
 
     def convertirFecha(self, fecha):
+        """funcion para dar formato a una fecha"""
         fecha=datetime.strptime(fecha,"%Y-%m-%dT%H:%M:%S.%f")
 
         return fecha
 
     def guardarRegistro(self,id,severidad,publicado,editado,descripcion,estado):
+        """funcion para guardar una vulnerabilidad en la base de datos"""
         consulta ='INSERT INTO api_cve  VALUES ("{}",{},"{}","{}","{}","{}","{}")'.format(id,False,self.convertirFecha(publicado),self.convertirFecha(editado),descripcion,severidad,estado)
         #print(consulta)
         self.cursor.execute(consulta)
@@ -32,6 +35,7 @@ class Cliente:
     #funcion para llenar la tabla de cve desde cero
     #se haran multiples consultas a la api para traer
     def llenarTabla(self):
+        """Funcion para llenar la tabla de vulnerabilidades"""
 
         incremento=2000
         total= requests.get(self.base+"?resultsPerPage={}&startIndex={}".format(1,1)).json()["totalResults"]

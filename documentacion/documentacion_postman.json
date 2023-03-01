@@ -1,0 +1,631 @@
+{
+	"info": {
+		"_postman_id": "f45928cb-de27-43c9-bfce-eb62b6c69104",
+		"name": "Reto python crm",
+		"description": "StartFragment\n\nApi rest desarollada en django framework, utilisando una base de datos sqlite 3, se desarollo con la finalidad de llevar un control de las vulnerabilidades obtenidas en la api  https://services.nvd.nist.gov/rest/json/cves/2.0 con el fin de saber caules vulnerabilidades han sido corregidas en nuestro sistema y caules no.\n\nEndFragment",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "21400985"
+	},
+	"item": [
+		{
+			"name": "Autentificacion",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						""
+					]
+				},
+				"description": "Devuelve un token que servira como autentificacion para usar las otras funciones de la api, este debe adjuntarse a headers con la clave \"Token\""
+			},
+			"response": [
+				{
+					"name": "New Request",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:8000/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								""
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Tue, 28 Feb 2023 21:33:17 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "WSGIServer/0.2 CPython/3.10.10"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Length",
+							"value": "137"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "Referrer-Policy",
+							"value": "same-origin"
+						},
+						{
+							"key": "Cross-Origin-Opener-Policy",
+							"value": "same-origin"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnQiOiI0NyIsImV4cCI6MTY3Nzc3NDc5N30.ChM-cmlaKWRC4A4jT7gLCcXE-QmiQqA-cEeraDDXUnU\"\n}"
+				}
+			]
+		},
+		{
+			"name": "obtener vulnerabilidades",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnQiOiI4NCIsImV4cCI6MTY3Nzc3Mzg5OH0.KqJUOeHJymI7zIFf6g7uj__xZc7Kv00oK-4z0p7Bink",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api?cve_por_pagina=10",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api"
+					],
+					"query": [
+						{
+							"key": "cve_por_pagina",
+							"value": "10"
+						}
+					]
+				},
+				"description": "Endpoint GET que devuelve el listado total de las vulnerabilidades.  \nDado que no es posible traer las mas de 200mil vulneravilidades de una sola peticion, se tendran que hacer varias peticiones ajustando parametros opcionales en la ruta.\n\nParametros:\n\n- cve_por_pagina :\n    \n\nrecibe un numero entero, que coresponde al numero de vulnerabilidades por peticion, este parametro es opcional y tiene como valor por defecto 10000.\n\n- indice_inicial\n    \n\nrecibe un numero entero, que coresponde al indice desde cual se enviaran la cantidad de vunerabilidades de acuerdo a la peticion, este parametro es opcional y tiene como valor por defecto 0.\n\n- todas:\n    \n\nrecibe el valor 1 para devolver todas las vulnerabilidades ignorando los parametros cve_por_pagina y indice_inicial, en caso de cualquier otro valor esta parametro se ignorara.\n\n- solucionadas:\n    \n\nen caso de recibir el vvalor de 1 devuelve unicamente aquellas vulnerabilidades que han sido solicionadas en el sistema, en caso de recibir 0, devolvera solo las que no han sido solucio en el sistema, y en caso de cualquier otro valor devolvera indiscriminadamente las vulnerabilidades.\n\nen cao de no encontar ninguna vulnerabilidad que se adecue a los parametros devolvera no found"
+			},
+			"response": [
+				{
+					"name": "obtener vulnerabilidades 1",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnQiOiI0NyIsImV4cCI6MTY3Nzc3NDc5N30.ChM-cmlaKWRC4A4jT7gLCcXE-QmiQqA-cEeraDDXUnU",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api?cve_por_pagina=10",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api"
+							],
+							"query": [
+								{
+									"key": "cve_por_pagina",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Tue, 28 Feb 2023 18:52:45 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "WSGIServer/0.2 CPython/3.10.10"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Length",
+							"value": "3127"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "Referrer-Policy",
+							"value": "same-origin"
+						},
+						{
+							"key": "Cross-Origin-Opener-Policy",
+							"value": "same-origin"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"msg\": \"sucess\",\n    \"CVEs\": [\n        {\n            \"id\": \"CVE-1999-0095\",\n            \"solucionado\": true,\n            \"publicado\": \"1988-10-01T04:00:00Z\",\n            \"ultimaModificacion\": \"2019-06-11T20:29:00.263Z\",\n            \"descripcion\": \"The debug command in Sendmail is enabled, allowing attackers to execute commands as root.\",\n            \"severidad\": \"HIGH\",\n            \"estado\": \"Modified\"\n        },\n        {\n            \"id\": \"CVE-1999-0082\",\n            \"solucionado\": true,\n            \"publicado\": \"1988-11-11T05:00:00Z\",\n            \"ultimaModificacion\": \"2008-09-09T12:33:40.853Z\",\n            \"descripcion\": \"CWD ~root command in ftpd allows root access.\",\n            \"severidad\": \"HIGH\",\n            \"estado\": \"Analyzed\"\n        },\n        {\n            \"id\": \"CVE-1999-1471\",\n            \"solucionado\": true,\n            \"publicado\": \"1989-01-01T05:00:00Z\",\n            \"ultimaModificacion\": \"2008-09-05T20:19:36.257Z\",\n            \"descripcion\": \"Buffer overflow in passwd in BSD based operating systems 4.3 and earlier allows local users to gain root privileges by specifying a long shell or GECOS field.\",\n            \"severidad\": \"HIGH\",\n            \"estado\": \"Analyzed\"\n        },\n        {\n            \"id\": \"CVE-1999-1122\",\n            \"solucionado\": false,\n            \"publicado\": \"1989-07-26T04:00:00Z\",\n            \"ultimaModificacion\": \"2018-05-03T01:29:04.817Z\",\n            \"descripcion\": \"Vulnerability in restore in SunOS 4.0.3 and earlier allows local users to gain privileges.\",\n            \"severidad\": \"MEDIUM\",\n            \"estado\": \"Modified\"\n        },\n        {\n            \"id\": \"CVE-1999-1467\",\n            \"solucionado\": false,\n            \"publicado\": \"1989-10-26T04:00:00Z\",\n            \"ultimaModificacion\": \"2017-12-19T02:29:08.393Z\",\n            \"descripcion\": \"Vulnerability in rcp on SunOS 4.0.x allows remote attackers from trusted hosts to execute arbitrary commands as root, possibly related to the configuration of the nobody user.\",\n            \"severidad\": \"HIGH\",\n            \"estado\": \"Modified\"\n        },\n        {\n            \"id\": \"CVE-1999-1506\",\n            \"solucionado\": false,\n            \"publicado\": \"1990-01-29T05:00:00Z\",\n            \"ultimaModificacion\": \"2008-09-05T20:19:41.257Z\",\n            \"descripcion\": \"Vulnerability in SMI Sendmail 4.0 and earlier, on SunOS up to 4.0.3, allows remote attackers to access user bin.\",\n            \"severidad\": \"HIGH\",\n            \"estado\": \"Analyzed\"\n        },\n        {\n            \"id\": \"CVE-1999-0084\",\n            \"solucionado\": false,\n            \"publicado\": \"1990-05-01T04:00:00Z\",\n            \"ultimaModificacion\": \"2017-10-10T01:29:00.387Z\",\n            \"descripcion\": \"Certain NFS servers allow users to use mknod to gain privileges by creating a writable kmem device and setting the UID to 0.\",\n            \"severidad\": \"HIGH\",\n            \"estado\": \"Modified\"\n        },\n        {\n            \"id\": \"CVE-2000-0388\",\n            \"solucionado\": false,\n            \"publicado\": \"1990-05-09T04:00:00Z\",\n            \"ultimaModificacion\": \"2008-09-10T19:04:33.930Z\",\n            \"descripcion\": \"Buffer overflow in FreeBSD libmytinfo library allows local users to execute commands via a long TERMCAP environmental variable.\",\n            \"severidad\": \"HIGH\",\n            \"estado\": \"Analyzed\"\n        },\n        {\n            \"id\": \"CVE-1999-0209\",\n            \"solucionado\": false,\n            \"publicado\": \"1990-08-14T04:00:00Z\",\n            \"ultimaModificacion\": \"2008-09-09T12:34:01.117Z\",\n            \"descripcion\": \"The SunView (SunTools) selection_svc facility allows remote users to read files.\",\n            \"severidad\": \"MEDIUM\",\n            \"estado\": \"Analyzed\"\n        },\n        {\n            \"id\": \"CVE-1999-1198\",\n            \"solucionado\": false,\n            \"publicado\": \"1990-10-03T04:00:00Z\",\n            \"ultimaModificacion\": \"2008-09-05T20:18:57.260Z\",\n            \"descripcion\": \"BuildDisk program on NeXT systems before 2.0 does not prompt users for the root password, which allows local users to gain root privileges.\",\n            \"severidad\": \"HIGH\",\n            \"estado\": \"Analyzed\"\n        }\n    ]\n}"
+				},
+				{
+					"name": "obtener vulnerabilidades 2",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnQiOiI0NyIsImV4cCI6MTY3Nzc3NDc5N30.ChM-cmlaKWRC4A4jT7gLCcXE-QmiQqA-cEeraDDXUnU",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api?cve_por_pagina=10&indice_inicial=10",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api"
+							],
+							"query": [
+								{
+									"key": "cve_por_pagina",
+									"value": "10"
+								},
+								{
+									"key": "indice_inicial",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Tue, 28 Feb 2023 18:41:35 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "WSGIServer/0.2 CPython/3.10.10"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Length",
+							"value": "3339"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "Referrer-Policy",
+							"value": "same-origin"
+						},
+						{
+							"key": "Cross-Origin-Opener-Policy",
+							"value": "same-origin"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"msg\": \"sucess\",\n    \"CVEs\": [\n        {\n            \"id\": \"CVE-1999-1391\",\n            \"solucionado\": true,\n            \"publicado\": \"1990-10-03T04:00:00Z\",\n            \"ultimaModificacion\": \"2008-09-05T20:19:24.600Z\",\n            \"descripcion\": \"Vulnerability in NeXT 1.0a and 1.0 with publicly accessible printers allows local users to gain privileges via a combination of the npd program and weak directory permissions.\",\n            \"severidad\": \"HIGH\",\n            \"estado\": \"Analyzed\"\n        },\n        {\n            \"id\": \"CVE-1999-1392\",\n            \"solucionado\": true,\n            \"publicado\": \"1990-10-03T04:00:00Z\",\n            \"ultimaModificacion\": \"2008-09-05T20:19:24.740Z\",\n            \"descripcion\": \"Vulnerability in restore0.9 installation script in NeXT 1.0a and 1.0 allows local users to gain root privileges.\",\n            \"severidad\": \"HIGH\",\n            \"estado\": \"Analyzed\"\n        },\n        {\n            \"id\": \"CVE-1999-1057\",\n            \"solucionado\": false,\n            \"publicado\": \"1990-10-25T04:00:00Z\",\n            \"ultimaModificacion\": \"2008-09-05T20:18:37.230Z\",\n            \"descripcion\": \"VMS 4.0 through 5.3 allows local users to gain privileges via the ANALYZE/PROCESS_DUMP dcl command.\",\n            \"severidad\": \"MEDIUM\",\n            \"estado\": \"Analyzed\"\n        },\n        {\n            \"id\": \"CVE-1999-1554\",\n            \"solucionado\": false,\n            \"publicado\": \"1990-10-31T05:00:00Z\",\n            \"ultimaModificacion\": \"2008-09-05T20:19:48.163Z\",\n            \"descripcion\": \"/usr/sbin/Mail on SGI IRIX 3.3 and 3.3.1 does not properly set the group ID to the group ID of the user who started Mail, which allows local users to read the mail of other users.\",\n            \"severidad\": \"LOW\",\n            \"estado\": \"Analyzed\"\n        },\n        {\n            \"id\": \"CVE-1999-1197\",\n            \"solucionado\": false,\n            \"publicado\": \"1990-12-20T05:00:00Z\",\n            \"ultimaModificacion\": \"2008-09-05T20:18:57.117Z\",\n            \"descripcion\": \"TIOCCONS in SunOS 4.1.1 does not properly check the permissions of a user who tries to redirect console output and input, which could allow a local user to gain privileges.\",\n            \"severidad\": \"HIGH\",\n            \"estado\": \"Analyzed\"\n        },\n        {\n            \"id\": \"CVE-1999-1115\",\n            \"solucionado\": false,\n            \"publicado\": \"1990-12-31T05:00:00Z\",\n            \"ultimaModificacion\": \"2008-09-05T20:18:45.430Z\",\n            \"descripcion\": \"Vulnerability in the /etc/suid_exec program in HP Apollo Domain/OS sr10.2 and sr10.3 beta, related to the Korn Shell (ksh).\",\n            \"severidad\": \"HIGH\",\n            \"estado\": \"Analyzed\"\n        },\n        {\n            \"id\": \"CVE-1999-1258\",\n            \"solucionado\": false,\n            \"publicado\": \"1991-01-15T05:00:00Z\",\n            \"ultimaModificacion\": \"2017-10-10T01:29:04.857Z\",\n            \"descripcion\": \"rpc.pwdauthd in SunOS 4.1.1 and earlier does not properly prevent remote access to the daemon, which allows remote attackers to obtain sensitive system information.\",\n            \"severidad\": \"MEDIUM\",\n            \"estado\": \"Modified\"\n        },\n        {\n            \"id\": \"CVE-1999-1438\",\n            \"solucionado\": false,\n            \"publicado\": \"1991-02-22T05:00:00Z\",\n            \"ultimaModificacion\": \"2008-09-05T20:19:31.490Z\",\n            \"descripcion\": \"Vulnerability in /bin/mail in SunOS 4.1.1 and earlier allows local users to gain root privileges via certain command line arguments.\",\n            \"severidad\": \"HIGH\",\n            \"estado\": \"Analyzed\"\n        },\n        {\n            \"id\": \"CVE-1999-1211\",\n            \"solucionado\": false,\n            \"publicado\": \"1991-03-27T05:00:00Z\",\n            \"ultimaModificacion\": \"2017-12-19T02:29:03.553Z\",\n            \"descripcion\": \"Vulnerability in in.telnetd in SunOS 4.1.1 and earlier allows local users to gain root privileges.\",\n            \"severidad\": \"HIGH\",\n            \"estado\": \"Modified\"\n        },\n        {\n            \"id\": \"CVE-1999-1212\",\n            \"solucionado\": false,\n            \"publicado\": \"1991-03-27T05:00:00Z\",\n            \"ultimaModificacion\": \"2017-12-19T02:29:03.613Z\",\n            \"descripcion\": \"Vulnerability in in.rlogind in SunOS 4.0.3 and 4.0.3c allows local users to gain root privileges.\",\n            \"severidad\": \"HIGH\",\n            \"estado\": \"Modified\"\n        }\n    ]\n}"
+				},
+				{
+					"name": "obtener vulnerabilidades 3",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnQiOiI0NyIsImV4cCI6MTY3Nzc3NDc5N30.ChM-cmlaKWRC4A4jT7gLCcXE-QmiQqA-cEeraDDXUnU",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api?cve_por_pagina=10&solucionadas=1",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api"
+							],
+							"query": [
+								{
+									"key": "cve_por_pagina",
+									"value": "10"
+								},
+								{
+									"key": "solucionadas",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Tue, 28 Feb 2023 16:20:12 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "WSGIServer/0.2 CPython/3.10.10"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Length",
+							"value": "1581"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "Referrer-Policy",
+							"value": "same-origin"
+						},
+						{
+							"key": "Cross-Origin-Opener-Policy",
+							"value": "same-origin"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"msg\": \"sucess\",\n    \"CVEs\": [\n        {\n            \"id\": \"CVE-1999-0095\",\n            \"solucionado\": true,\n            \"publicado\": \"1988-10-01T04:00:00Z\",\n            \"ultimaModificacion\": \"2019-06-11T20:29:00.263Z\",\n            \"descripcion\": \"The debug command in Sendmail is enabled, allowing attackers to execute commands as root.\",\n            \"severidad\": \"HIGH\",\n            \"estado\": \"Modified\"\n        },\n        {\n            \"id\": \"CVE-1999-0082\",\n            \"solucionado\": true,\n            \"publicado\": \"1988-11-11T05:00:00Z\",\n            \"ultimaModificacion\": \"2008-09-09T12:33:40.853Z\",\n            \"descripcion\": \"CWD ~root command in ftpd allows root access.\",\n            \"severidad\": \"HIGH\",\n            \"estado\": \"Analyzed\"\n        },\n        {\n            \"id\": \"CVE-1999-1471\",\n            \"solucionado\": true,\n            \"publicado\": \"1989-01-01T05:00:00Z\",\n            \"ultimaModificacion\": \"2008-09-05T20:19:36.257Z\",\n            \"descripcion\": \"Buffer overflow in passwd in BSD based operating systems 4.3 and earlier allows local users to gain root privileges by specifying a long shell or GECOS field.\",\n            \"severidad\": \"HIGH\",\n            \"estado\": \"Analyzed\"\n        },\n        {\n            \"id\": \"CVE-1999-1391\",\n            \"solucionado\": true,\n            \"publicado\": \"1990-10-03T04:00:00Z\",\n            \"ultimaModificacion\": \"2008-09-05T20:19:24.600Z\",\n            \"descripcion\": \"Vulnerability in NeXT 1.0a and 1.0 with publicly accessible printers allows local users to gain privileges via a combination of the npd program and weak directory permissions.\",\n            \"severidad\": \"HIGH\",\n            \"estado\": \"Analyzed\"\n        },\n        {\n            \"id\": \"CVE-1999-1392\",\n            \"solucionado\": true,\n            \"publicado\": \"1990-10-03T04:00:00Z\",\n            \"ultimaModificacion\": \"2008-09-05T20:19:24.740Z\",\n            \"descripcion\": \"Vulnerability in restore0.9 installation script in NeXT 1.0a and 1.0 allows local users to gain root privileges.\",\n            \"severidad\": \"HIGH\",\n            \"estado\": \"Analyzed\"\n        }\n    ]\n}"
+				}
+			]
+		},
+		{
+			"name": "establecer vulnerabilidades solucionadas",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnQiOiI0NyIsImV4cCI6MTY3Nzc3NDc5N30.ChM-cmlaKWRC4A4jT7gLCcXE-QmiQqA-cEeraDDXUnU",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						""
+					]
+				},
+				"description": "Solicittud tipo POST, utilizada para indicar que determinadas vulnerabilidades ya fueron solucionadas en nuestro sistema.\n\nrecibe en el body un objeto tipo json, con la clave ids y como valor la lista de las id de las vulnerabilidades solucionadas."
+			},
+			"response": [
+				{
+					"name": "establecer vulnerabilidades solucionadas 1",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"ids\":[\"CVE-1999-0095\",\"CVE-1999-1392\",\"CVE-1999-1391\"]}"
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/?Token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnQiOiI0NyIsImV4cCI6MTY3Nzc3NDc5N30.ChM-cmlaKWRC4A4jT7gLCcXE-QmiQqA-cEeraDDXUnU",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								""
+							],
+							"query": [
+								{
+									"key": "Token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnQiOiI0NyIsImV4cCI6MTY3Nzc3NDc5N30.ChM-cmlaKWRC4A4jT7gLCcXE-QmiQqA-cEeraDDXUnU"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Tue, 28 Feb 2023 16:16:32 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "WSGIServer/0.2 CPython/3.10.10"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Length",
+							"value": "92"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "Referrer-Policy",
+							"value": "same-origin"
+						},
+						{
+							"key": "Cross-Origin-Opener-Policy",
+							"value": "same-origin"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"datos\": {\n        \"CVE-1999-0095\": \"sucess\",\n        \"CVE-1999-1392\": \"sucess\",\n        \"CVE-1999-1391\": \"sucess\"\n    }\n}"
+				},
+				{
+					"name": "establecer vulnerabilidades solucionadas 2",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnQiOiI4NCIsImV4cCI6MTY3Nzc3Mzg5OH0.KqJUOeHJymI7zIFf6g7uj__xZc7Kv00oK-4z0p7Bink",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"ids\":[\"CVE-1999-0095\",\"CVE-0-1392\",\"CVE-0-1391\"]}"
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/?Token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnQiOiI0NyIsImV4cCI6MTY3Nzc3NDc5N30.ChM-cmlaKWRC4A4jT7gLCcXE-QmiQqA-cEeraDDXUnU",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								""
+							],
+							"query": [
+								{
+									"key": "Token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnQiOiI0NyIsImV4cCI6MTY3Nzc3NDc5N30.ChM-cmlaKWRC4A4jT7gLCcXE-QmiQqA-cEeraDDXUnU"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Tue, 28 Feb 2023 16:26:06 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "WSGIServer/0.2 CPython/3.10.10"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Length",
+							"value": "92"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "Referrer-Policy",
+							"value": "same-origin"
+						},
+						{
+							"key": "Cross-Origin-Opener-Policy",
+							"value": "same-origin"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"datos\": {\n        \"CVE-1999-0095\": \"sucess\",\n        \"CVE-0-1392\": \"not found\",\n        \"CVE-0-1391\": \"not found\"\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "vulnerabilidades sumarizadas",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnQiOiI0NyIsImV4cCI6MTY3Nzc3NDc5N30.ChM-cmlaKWRC4A4jT7gLCcXE-QmiQqA-cEeraDDXUnU",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/sumarizada",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"sumarizada"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "vulnerabilidades sumarizadas",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnQiOiI0NyIsImV4cCI6MTY3Nzc3NDc5N30.ChM-cmlaKWRC4A4jT7gLCcXE-QmiQqA-cEeraDDXUnU",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/sumarizada",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"sumarizada"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Tue, 28 Feb 2023 20:09:39 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "WSGIServer/0.2 CPython/3.10.10"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Length",
+							"value": "655"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "Referrer-Policy",
+							"value": "same-origin"
+						},
+						{
+							"key": "Cross-Origin-Opener-Policy",
+							"value": "same-origin"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"datos\": {\n        \"HIGH\": {\n            \"solucionado\": {\n                \"count\": 56867,\n                \"unique\": 2,\n                \"top\": false,\n                \"freq\": 56864\n            },\n            \"estado\": {\n                \"count\": 56867,\n                \"unique\": 5,\n                \"top\": \"Analyzed\",\n                \"freq\": 28564\n            }\n        },\n        \"MEDIUM\": {\n            \"solucionado\": {\n                \"count\": 104564,\n                \"unique\": 1,\n                \"top\": false,\n                \"freq\": 104564\n            },\n            \"estado\": {\n                \"count\": 104564,\n                \"unique\": 5,\n                \"top\": \"Analyzed\",\n                \"freq\": 67224\n            }\n        },\n        \"LOW\": {\n            \"solucionado\": {\n                \"count\": 19133,\n                \"unique\": 1,\n                \"top\": false,\n                \"freq\": 19133\n            },\n            \"estado\": {\n                \"count\": 19133,\n                \"unique\": 4,\n                \"top\": \"Analyzed\",\n                \"freq\": 13484\n            }\n        },\n        \"None\": {\n            \"solucionado\": {\n                \"count\": 28113,\n                \"unique\": 1,\n                \"top\": false,\n                \"freq\": 28113\n            },\n            \"estado\": {\n                \"count\": 28113,\n                \"unique\": 7,\n                \"top\": \"Analyzed\",\n                \"freq\": 14729\n            }\n        }\n    }\n}"
+				}
+			]
+		}
+	]
+}
