@@ -1,3 +1,6 @@
+
+import random
+
 from datetime import datetime, timedelta
 
 from django.http import JsonResponse
@@ -12,7 +15,7 @@ import logging
 logging.basicConfig(filename='logs.log', encoding='utf-8', level=logging.DEBUG)
 from jwt import encode, decode, exceptions
 
-
+import jwt
 # Create your views here.
 
 class VistaCVE(View):
@@ -21,11 +24,13 @@ class VistaCVE(View):
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         try:
+
             #print(json.loads(str(request.headers).replace("'", '"')))
             self.token = decode(json.loads(str(request.headers).replace("'", '"'))["Token"], key="secret",algorithms="HS256")
 
         except Exception as e:
             return JsonResponse({"msg": str(e)})
+
         return super().dispatch(request, *args, **kwargs)
 
     def get(self, request):
@@ -33,6 +38,8 @@ class VistaCVE(View):
         #en caso de que algun parametro reciba un valor no adecuado tomara el valor por defecto
         logging.info("solicitud get vistaCVE token:",self.token)
         # parametro que define el numero de CVEs enviados en la peticion por defecto tiene el valor de 10 mil
+
+
         CVEPorPagina = request.GET.get("cve_por_pagina")
         CVEPorPagina = 10000 if CVEPorPagina is None or not (CVEPorPagina.isnumeric()) else int(CVEPorPagina)
 
@@ -115,8 +122,10 @@ class Vistasumarizada(View):
 
         return JsonResponse({"datos": datos})
 
+
 class auth(View):
     """clase vista para generacion de tokens """
+
 
 
     def get(self,response):
@@ -124,7 +133,8 @@ class auth(View):
             now = datetime.now()
             return now + timedelta(days=days)
 
-        token = encode(payload={ "exp": expire_date(2)}, key="secret", algorithm="HS256")
+
+        token = encode({"client":str(random.randint(0,100)),"exp": expire_date(2)}, key="secret", algorithm="HS256")
         logging.info("solicitud de token:", token)
 
         return JsonResponse({"datos": str(token)})
