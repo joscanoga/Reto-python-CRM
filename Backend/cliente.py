@@ -42,7 +42,7 @@ class Cliente:
             url=self.base+"?resultsPerPage={}&startIndex={}".format(incremento,indice)
             #print(url)
             datos = requests.get(url)
-            print(len(self.cursor.execute("SELECT * FROM api_cve").fetchall()))
+            #print(len(self.cursor.execute("SELECT * FROM api_cve").fetchall()))
             if datos.status_code!=200:
                 time.sleep(30)
                 continue
@@ -60,12 +60,13 @@ class Cliente:
 
             #total = int(datos["totalResults"])
 
-
+            #print(str(indice) + "/" + str(total))
             indice +=incremento
-            print(str(indice)+"/"+str(total))
+
 
 
 if __name__ == "__main__":
 
     c= Cliente( )
     c.llenarTabla()
+    print("base de datos actualizada")

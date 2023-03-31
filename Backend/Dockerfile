@@ -13,6 +13,8 @@ ENV PYTHONUNBUFFERED 1
 ADD requirements.txt .
 RUN python -m pip install -r requirements.txt
 
+
 # Set working directory and addour Flask API files
 WORKDIR /app
-ADD . /app  
+ADD . /app
+RUN python cliente.py
